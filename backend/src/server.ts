@@ -1,14 +1,25 @@
-import express from 'express';
+import express from 'express'
+import serverApp from './serverApp'
+import config from './config'
+import DB from './database' 
 
-const app = express();
 
-app.get("/", (req,res) => {
-    res.send("<h2>Hello There!</h2>");
-})
+const startServer = async () => {
+    
+    const app = express()
 
-const port = process.env.PORT || 8080
+    await serverApp(app)
 
-const server = app.listen(port, () => {
-    console.log(`Listening to port ${port}`);  
-})
-  
+    await DB.databaseConnection()
+
+    app.listen(config.PORT, () => {
+        console.log(`listening to port ${config.PORT}`)
+    })
+    .on('error', (err: NodeJS.ErrnoException) => {
+        console.log(err)
+        process.exit()   
+    })
+
+}
+
+startServer()

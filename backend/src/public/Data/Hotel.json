@@ -1,0 +1,46 @@
+[
+    {
+        "Name": "Divine Hotel",
+        "location" : {
+            "coordinates": [-80.128473, 25.781842],
+            "address": "SouthPark"
+        },
+        "Manager": "Sahil Chauksey",
+        "Adds": [
+
+        ]
+    },
+    {
+        "Name": "Honey Hotel",
+        "location" : {
+            "coordinates": [-20.128473, 55.781842],
+            "address": "Kolkata India"
+        },
+        "Manager": "Saumy Aryan",
+        "Adds": [
+            
+        ]
+    },
+    {
+        "Name": "Hotel Kurry",
+        "location" : {
+            "coordinates": [80.128473, 70.781842],
+            "address": "NorthEast"
+        },
+        "Manager": "Harshat Patidar",
+        "Adds": [
+            
+        ]
+    },
+    {
+        "Name": "Om Hotel",
+        "location" : {
+            "coordinates": [60.128473, 55.781842],
+            "address": "Jabalpur"
+        },
+        "Manager": "Gaurav Wasnik",
+        "Adds": [
+
+        ]
+    }
+]
