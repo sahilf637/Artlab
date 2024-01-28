@@ -1,5 +1,6 @@
 import cors from 'cors'
 import express, {Express} from 'express'
+import user from './api/userApi'
 
 export default async (app: Express) => {
 
@@ -12,5 +13,5 @@ export default async (app: Express) => {
     app.use(express.static('./public'))
 
     //api
-
+    user(app)
 }

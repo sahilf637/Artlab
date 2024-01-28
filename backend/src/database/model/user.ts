@@ -8,12 +8,7 @@ interface User {
     Password: string;
     Phone: number;
     Salt: string;
-    Application: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Adds"
-        }
-    ]
+    Application: Array<Schema.Types.ObjectId | string>;
 }
 
 interface userDocument extends User , Document {}

@@ -1,7 +1,7 @@
 import express from 'express'
 import serverApp from './serverApp'
 import config from './config'
-import DB from './database' 
+import databaseConnection from './database/connection' 
 
 
 const startServer = async () => {
@@ -10,7 +10,7 @@ const startServer = async () => {
 
     await serverApp(app)
 
-    await DB.databaseConnection()
+    await databaseConnection()
 
     app.listen(config.PORT, () => {
         console.log(`listening to port ${config.PORT}`)

@@ -9,12 +9,14 @@ if(process.env.NODE_ENV === "dev") {
 
 interface AppConfig {
     PORT? : string,
-    URL?: string
+    URL?: string,
+    APP_SECRET?: string
 }
 
 const config: AppConfig = {
     PORT: process.env.PORT,
-    URL: process.env.URL
+    URL: process.env.URL,
+    APP_SECRET: process.env.APP_SECRET
 }
 
 export default config

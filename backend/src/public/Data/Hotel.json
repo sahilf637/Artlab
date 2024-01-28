@@ -1,6 +1,8 @@
 [
     {
         "Name": "Divine Hotel",
+        "Email": "Divine123@gmail.com",
+        "Phone": 9898765122,
         "location" : {
             "coordinates": [-80.128473, 25.781842],
             "address": "SouthPark"
@@ -12,6 +14,8 @@
     },
     {
         "Name": "Honey Hotel",
+        "Email": "Honey123@gmail.com",
+        "Phone": 9898733222,
         "location" : {
             "coordinates": [-20.128473, 55.781842],
             "address": "Kolkata India"
@@ -23,6 +27,8 @@
     },
     {
         "Name": "Hotel Kurry",
+        "Email": "Kurry123@gmail.com",
+        "Phone": 8318765122,
         "location" : {
             "coordinates": [80.128473, 70.781842],
             "address": "NorthEast"
@@ -34,6 +40,8 @@
     },
     {
         "Name": "Om Hotel",
+        "Email": "om123@gmail.com",
+        "Phone": 9898342122,
         "location" : {
             "coordinates": [60.128473, 55.781842],
             "address": "Jabalpur"
