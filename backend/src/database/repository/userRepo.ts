@@ -1,5 +1,5 @@
 import User from '../model/user'
-import { ObjectId } from 'mongoose';
+import mongoose, { ObjectId, Schema } from 'mongoose';
 import {
     ApiError,
     BadRequestError,
@@ -8,9 +8,10 @@ import {
 
 
 class UserRepository{
-    async createUser({ Name, DOB, Art, Email, Password, Phone, Salt}: {
+    async createUser({ Name, DOB, Role, Art, Email, Password, Phone, Salt}: {
         Name: string;
         DOB: Date;
+        Role: string;
         Art: string;
         Email: string;
         Password: string;
@@ -21,6 +22,7 @@ class UserRepository{
             const newUser = new User({
                 Name,
                 DOB,
+                Role,
                 Art,
                 Email,
                 Password,
@@ -50,6 +52,32 @@ class UserRepository{
                 STATUSCODE.INTERNAL_ERROR,
                 "Can't Find User"
             )
+        }
+    }
+
+    async findUserById(_id: {_id: ObjectId}): Promise<any> {
+        try {
+            const userData = await User.findOne({ _id: _id })
+            return userData
+        } catch (error) {
+            throw new ApiError(
+                "API Error",
+                STATUSCODE.INTERNAL_ERROR,
+                error.message
+            )
+        }
+    }
+
+    async findAllUser():Promise<any> {
+        try {
+            const userData = await User.find()
+            return userData
+        } catch (error) {
+            throw new ApiError(
+                "API Error",
+                STATUSCODE.INTERNAL_ERROR,
+                error.message
+            ) 
         }
     }
 

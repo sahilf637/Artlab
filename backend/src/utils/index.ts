@@ -1,7 +1,8 @@
-import  Jwt  from "jsonwebtoken"
+import  Jwt, { JwtPayload }  from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import config from "../config"
 import { Request } from "express"
+import { ObjectId } from "mongoose"
 
 export const GenerateSalt = async () => {
     return await bcrypt.genSalt()
@@ -31,13 +32,31 @@ export const GenerateSignature = async (payload: object):Promise<any> => {
 
 export const ValidateSignature = async (req: Request): Promise<boolean> => {
     try {
-        const Signature = req.get("Authorization")
+        const Signature = req.cookies.jwt
         const data = await Jwt.verify(Signature, config.APP_SECRET)
         if(req.body == data)
         return true
     } catch (error) {
         console.log(error);
         return false
+    }
+}
+
+export const getId = async (req: Request): Promise<ObjectId> => {
+    try {
+        const signature = req.cookies.jwt
+        const data = await Jwt.verify(signature, config.APP_SECRET)
+
+        
+        if(typeof data === 'object' && data._id){
+            return data._id
+        }
+        else{
+            throw new Error("Unauthorized")
+        }
+    } catch (error) {
+        console.log(error)
+        return error
     }
 }
 

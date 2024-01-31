@@ -6,23 +6,12 @@ interface Hotel {
     Number: Number;
     Photos: [String];
     Doc: [String];
-    locations: {
-            coordinates: [Number],   //latitude then longitude
+    Location: {
+            coordinates: Array<Number>,   //latitude then longitude
             address: String,
           };
-    Manager: String;
-    Adds: [
-        {
-        type: Schema.Types.ObjectId,
-        ref: "Adds",
-        Applicant: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "User"
-            }
-        ]
-        }
-    ]
+    Manager: Schema.Types.ObjectId,
+    Adds: Array<Schema.Types.ObjectId>
 }
 
 interface hotelDocument extends Hotel , Document{}
@@ -33,21 +22,18 @@ const hotelSchema = new Schema<hotelDocument>({
     Number: Number,
     Photos: [String],
     Doc: [String],
-    locations: {
-            coordinates: [Number],   //latitude then longitude
+    Location: {
+            coordinates: [Number, Number],   //latitude then longitude
             address: String,
           },
-    Manager: String,
+    Manager: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
     Adds: [
         {
             type: Schema.Types.ObjectId,
             ref: "Adds",
-            Applicant: [
-                {
-                    type: Schema.Types.ObjectId,
-                    ref: "User"
-                }
-            ]
         }
     ]
 })

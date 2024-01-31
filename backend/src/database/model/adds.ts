@@ -2,10 +2,8 @@ import mongoose, { Schema, Document } from "mongoose";
 
 interface Adds {
     Art: String;
-    Hotel: {
-        type: Schema.Types.ObjectId,
-        ref: "Hotel"
-    };
+    Hotel: Schema.Types.ObjectId,
+    Applicants: Schema.Types.ObjectId
     pay: Number;
     Date: Date;
 }
@@ -17,6 +15,10 @@ const addSchema =  new Schema<addDocument>({
     Hotel: {
         type: Schema.Types.ObjectId,
         ref: "Hotel"
+    },
+    Applicants: {
+        type: Schema.Types.ObjectId,
+        ref: "USer"
     },
     pay: Number,
     Date: Date

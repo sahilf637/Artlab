@@ -3,6 +3,11 @@ import mongoose, { Schema, Document } from "mongoose";
 interface User {
     Name: string;
     DOB: Date;
+    Role: {
+        type: string,
+        enum: ["Artist", "Manager", "Admin"],
+        default: "Artist"
+    }
     Art: string;
     Email: string;
     Password: string;
@@ -16,6 +21,7 @@ interface userDocument extends User , Document {}
 const userSchema = new Schema<userDocument>({
     Name: String,
     DOB: Date,
+    Role: String,
     Art: String,
     Email: String,
     Password: String,

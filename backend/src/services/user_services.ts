@@ -1,4 +1,5 @@
 import  UserRepository  from "../database/repository/userRepo";
+import { ObjectId } from "mongoose";
 import { 
     ApiError,
     BadRequestError,
@@ -33,24 +34,26 @@ class UserServices{
                     }
                     const token  = await GenerateSignature(payload)
 
-                    return FormatData({ _id: user._id, token })
+                    return FormatData({ _id: user._id, token: token })
                 }
             }
             return null
         } catch (error) {
-            throw new ApiError("Unable to get user", error)
+            console.log(error);   
+            throw new ApiError("Data Not Found", error)
         }
     }
 
     async SignUp(userInput: {
         Name: string,
         DOB: Date,
+        Role: string,
         Art: string,
         Email: string,
         Password: string,
         Phone: number
     }): Promise<any>{
-        const { Name, DOB, Art, Email, Password, Phone } = userInput
+        const { Name, DOB, Role, Art, Email, Password, Phone } = userInput
 
         try {
             const Salt = await GenerateSalt()
@@ -59,6 +62,7 @@ class UserServices{
             const user = {
                 Name,
                 DOB,
+                Role,
                 Art,
                 Email,
                 Password: newPassword,
@@ -74,10 +78,32 @@ class UserServices{
             }
             const token  = await GenerateSignature(payload)
 
-            return FormatData({ _id: newUser._id, token })
+            return FormatData({ _id: newUser._id, token: token })
         } catch (error) {
             console.log(error);
-            throw new ApiError("Can't create new User", error)
+            throw new ApiError("Data Not Found", error)
+        }
+    }
+
+    async getAUser(_id: ObjectId): Promise<any> {
+        try {
+            const user = await this.repo.findUserById(_id)
+
+            return FormatData(user)
+        } catch (error) {
+            console.log(error)
+            throw new ApiError("Data Not Found", error)
+        }
+    }
+
+    async getAllUser(): Promise<any> {
+        try {
+            const Users = await this.repo.findAllUser()
+
+            return FormatData(Users)
+        } catch (error) {
+            console.log(error);
+            throw new ApiError("Data Not Found", error)
         }
     }
 }

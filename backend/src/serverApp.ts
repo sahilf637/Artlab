@@ -1,6 +1,10 @@
 import cors from 'cors'
 import express, {Express} from 'express'
+import cookieParser from 'cookie-parser'
 import user from './api/userApi'
+import hotel from './api/hotelApi'
+import morgan from 'morgan'
+import config from './config'
 
 export default async (app: Express) => {
 
@@ -10,8 +14,15 @@ export default async (app: Express) => {
 
     app.use(cors())
 
+    // if(config.NODE_ENV === "development")
+    app.use(morgan('dev'))
+
     app.use(express.static('./public'))
+
+    app.use(cookieParser())
 
     //api
     user(app)
+
+    hotel(app)
 }
