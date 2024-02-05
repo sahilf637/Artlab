@@ -30,32 +30,15 @@ export const GenerateSignature = async (payload: object):Promise<any> => {
     }
 }
 
-export const ValidateSignature = async (req: Request): Promise<boolean> => {
+export const ValidateSignature = async (req: Request): Promise<any> => {
     try {
         const Signature = req.cookies.jwt
         const data = await Jwt.verify(Signature, config.APP_SECRET)
-        if(req.body == data)
-        return true
-    } catch (error) {
-        console.log(error);
-        return false
-    }
-}
-
-export const getId = async (req: Request): Promise<ObjectId> => {
-    try {
-        const signature = req.cookies.jwt
-        const data = await Jwt.verify(signature, config.APP_SECRET)
-
-        
-        if(typeof data === 'object' && data._id){
-            return data._id
+        if(!data){
+            throw new Error("Invalid Signature")
         }
-        else{
-            throw new Error("Unauthorized")
-        }
+        return data
     } catch (error) {
-        console.log(error)
         return error
     }
 }

@@ -33,7 +33,6 @@ class UserRepository{
             const userData = await newUser.save();
             return userData
         } catch (error) {
-            console.log(error);
             throw new ApiError(
                 "API Error",
                 STATUSCODE.INTERNAL_ERROR,
@@ -57,7 +56,7 @@ class UserRepository{
 
     async findUserById(_id: {_id: ObjectId}): Promise<any> {
         try {
-            const userData = await User.findOne({ _id: _id })
+            const userData = await User.findOne({ _id: _id }).populate('Application', 'Art Hotel')
             return userData
         } catch (error) {
             throw new ApiError(
@@ -81,35 +80,39 @@ class UserRepository{
         }
     }
 
-    async applyAdds({ User_id, Adds_id }: { User_id: ObjectId, Adds_id: ObjectId }):Promise<any>{
-       try {
+    // async applyAdds({ User_id, Adds_id }: { User_id: ObjectId, Adds_id: ObjectId }):Promise<any>{
+    //    try {
         
-        const user = await User.findById(User_id)
+    //     const user = await User.findById(User_id)
         
-        if(user){
-            let isExist = false
-            let Application = user.Application
-            Application.map((app: any) => {
-                if(app == Adds_id)
-                isExist = true
-            })
-            if(!isExist){
-            Application.push(Adds_id)
-            user.Application = Application
-            await user.save()
-            }
-            return user
-        }
+    //     if(user){
+    //         let isExist = false
+    //         let Application = user.Application
+    //         Application.forEach(element => {
+    //             if(element == Adds_id)
+    //             isExist = true
+    //         });
+    //         // Application.map((app: any) => {
+    //         //     if(app == Adds_id)
+    //         //     isExist = true
+    //         // })
+    //         if(!isExist){
+    //         Application.push(Adds_id)
+    //         user.Application = Application
+    //         await user.save()
+    //         }
+    //         return user
+    //     }
 
-        throw new Error("Unable to get User")   
-       } catch (error) {
-        throw new ApiError(
-            "API Error",
-            STATUSCODE.INTERNAL_ERROR,
-            "Unable to Apply"
-        )
-       }
-    }
+    //     throw new Error("Unable to get User")   
+    //    } catch (error) {
+    //     throw new ApiError(
+    //         "API Error",
+    //         STATUSCODE.INTERNAL_ERROR,
+    //         "Unable to Apply"
+    //     )
+    //    }
+    // }
 }
 
 

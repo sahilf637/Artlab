@@ -8,7 +8,7 @@ import {
 
 
 class hotelServices{
-    public repo
+    public repo: hotelRepository
     constructor(){
         this.repo = new hotelRepository()
     }
@@ -65,9 +65,9 @@ class hotelServices{
 
     async findAllAddsByHotel( _id: Schema.Types.ObjectId): Promise<any> {
         try {
-            const hotelData = await this.repo.findAllAddsByHotel({ _id })
+            const hotelData = await this.repo.findHotelById({ _id })
 
-            return hotelData
+            return hotelData.Adds
         } catch (error) {
             throw new ApiError(
                 "Data not found",

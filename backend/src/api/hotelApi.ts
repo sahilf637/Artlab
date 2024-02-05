@@ -1,14 +1,16 @@
-import serverApp from "../serverApp";
 import hotelServices from "../services/hotel_servies";
-import { Request, Response, NextFunction, Express } from "express";
+import addServices from "../services/add_Services";
+import Auth from "./Middleware/Auth";
+import { Request, Response, NextFunction, Express, json } from "express";
 import { ObjectId } from "mongoose";
-import { getId } from "../utils";
+import { ValidateSignature } from "../utils";
 
 
 export default (app: Express) => {
-    const Services = new hotelServices()
+    const HotelServices = new hotelServices()
+    const AddServices = new addServices()
 
-    app.post("/hotel/register", async (req: Request, res: Response, next: NextFunction) => {
+    app.post("/hotel/register",Auth ,async (req: Request, res: Response, next: NextFunction) => {
         try {
             const {
                 Name,
@@ -18,8 +20,10 @@ export default (app: Express) => {
                 Docs,
                 Location
             } = req.body
-            const Manager = await <ObjectId><unknown>getId(req)
-            const data = await Services.registerHotel({ Name, Email, Number, Photos, Docs, Location, Manager})
+            const validData = await ValidateSignature(req)
+
+            const Manager = validData._id
+            const data = await HotelServices.registerHotel({ Name, Email, Number, Photos, Docs, Location, Manager})
 
             res.json(data)
         } catch (error) {
@@ -29,7 +33,7 @@ export default (app: Express) => {
 
     app.get("/hotel", async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const data = await Services.findAllHotel()
+            const data = await HotelServices.findAllHotel()
 
             res.json(data)
         } catch (error) {
@@ -37,10 +41,10 @@ export default (app: Express) => {
         }
     })
 
-    app.get("/hotel/:id/Adds", async (req: Request, res: Response, next: NextFunction) => {
+    app.get("/hotel/:id/Adds",Auth ,async (req: Request, res: Response, next: NextFunction) => {
         try {
             const _id = <ObjectId><unknown> req.params
-            const data = Services.findAllAddsByHotel(_id)
+            const data = HotelServices.findAllAddsByHotel(_id)
 
             res.json(data)
         } catch (error) {
@@ -48,10 +52,27 @@ export default (app: Express) => {
         }
     })
 
-    app.delete("/hotel/:id", async (req: Request, res: Response, next: NextFunction) => {
+    app.delete("/hotel/:id",Auth ,async (req: Request, res: Response, next: NextFunction) => {
         try {
             const _id = <ObjectId><unknown> req.params
-            const data = await Services.deleteAHotel(_id)
+            const data = await HotelServices.deleteAHotel(_id)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    app.post("/hotel/add/publish",Auth ,async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const {
+                Art,
+                Pay,
+                Date
+            } = req.body
+
+            const Hotel = req.user.Hotel
+            const hotelAdd = await AddServices.createAdd({ Art,Hotel, Pay, Date })
+
+            res.json(hotelAdd)
         } catch (error) {
             next(error)
         }

@@ -3,8 +3,8 @@ import express, {Express} from 'express'
 import cookieParser from 'cookie-parser'
 import user from './api/userApi'
 import hotel from './api/hotelApi'
+import Add from './api/addApi'
 import morgan from 'morgan'
-import config from './config'
 
 export default async (app: Express) => {
 
@@ -25,4 +25,6 @@ export default async (app: Express) => {
     user(app)
 
     hotel(app)
+
+    Add(app)
 }

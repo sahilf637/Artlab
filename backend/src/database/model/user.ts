@@ -3,17 +3,13 @@ import mongoose, { Schema, Document } from "mongoose";
 interface User {
     Name: string;
     DOB: Date;
-    Role: {
-        type: string,
-        enum: ["Artist", "Manager", "Admin"],
-        default: "Artist"
-    }
+    Role: string,
+    Hotel: Schema.Types.ObjectId,
     Art: string;
     Email: string;
     Password: string;
     Phone: number;
     Salt: string;
-    Application: Array<Schema.Types.ObjectId | string>;
 }
 
 interface userDocument extends User , Document {}
@@ -21,24 +17,33 @@ interface userDocument extends User , Document {}
 const userSchema = new Schema<userDocument>({
     Name: String,
     DOB: Date,
-    Role: String,
+    Role: {
+        type: String,
+        enum: ["Artist", "Manager", "Admin"],
+        default: "Artist"
+    },
+    Hotel: {
+        type: Schema.Types.ObjectId,
+        ref: "Hotel"
+    },
     Art: String,
     Email: String,
     Password: String,
     Phone: Number,
     Salt: String,
-    Application: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Adds"
-        }
-    ]
 },{
-    toJSON: {
+    toJSON: {   virtuals: true,
         transform(doc, ret){
             delete ret.Password;
         }
-    }
+    },
+    toObject: { virtuals: true }
+})
+
+userSchema.virtual('Application', {
+    ref: 'Adds',
+    foreignField: 'Applicants',
+    localField: '_id'
 })
 
 const User = mongoose.model<userDocument>('User', userSchema)

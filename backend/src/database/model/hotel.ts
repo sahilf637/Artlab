@@ -10,8 +10,7 @@ interface Hotel {
             coordinates: Array<Number>,   //latitude then longitude
             address: String,
           };
-    Manager: Schema.Types.ObjectId,
-    Adds: Array<Schema.Types.ObjectId>
+    Manager: Schema.Types.ObjectId
 }
 
 interface hotelDocument extends Hotel , Document{}
@@ -29,13 +28,17 @@ const hotelSchema = new Schema<hotelDocument>({
     Manager: {
         type: Schema.Types.ObjectId,
         ref: "User"
-    },
-    Adds: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Adds",
-        }
-    ]
+    }
+},
+{
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+})
+
+hotelSchema.virtual('Adds', {
+    ref: 'Adds',
+    foreignField: 'Hotel',
+    localField: '_id'
 })
 
 const Hotel = mongoose.model<hotelDocument>('Hotel', hotelSchema)

@@ -1,5 +1,5 @@
 import  UserRepository  from "../database/repository/userRepo";
-import { ObjectId } from "mongoose";
+import { ObjectId, Schema } from "mongoose";
 import { 
     ApiError,
     BadRequestError,
@@ -14,7 +14,7 @@ import {
 } from "./../utils"
 
 class UserServices{
-    public repo: any
+    public repo: UserRepository
     constructor(){
         this.repo = new UserRepository()
     }
@@ -85,9 +85,9 @@ class UserServices{
         }
     }
 
-    async getAUser(_id: ObjectId): Promise<any> {
+    async getAUserById(_id: ObjectId): Promise<any> {
         try {
-            const user = await this.repo.findUserById(_id)
+            const user = await this.repo.findUserById({ _id })
 
             return FormatData(user)
         } catch (error) {
@@ -106,6 +106,24 @@ class UserServices{
             throw new ApiError("Data Not Found", error)
         }
     }
+
+    async getUserByEmail( Email: string ): Promise<any> {
+        try {
+            const userData = this.repo.findUser({ Email })
+
+            return userData
+        } catch (error) {
+            throw new ApiError("Data Not Found", error)
+        }
+    }
+
+    // async applyForAdd( userId: Schema.Types.ObjectId, addId: Schema.Types.ObjectId): Promise<any>{
+    //     try {
+    //         const add = this.repo.
+    //     } catch (error) {
+            
+    //     }
+    // }
 }
 
 export default UserServices
